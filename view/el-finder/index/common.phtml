@@ -3,44 +3,17 @@
 /**
  * ElFinder Includes
  */
+$ajaxLibsPath = '//ajax.googleapis.com/ajax/libs';
+$publicPath   = $this->basePath() . $this->elPublicPath;
 
-/*   Google Jquery if needed */
 
-if (!empty($this->useGoogleJquery) && $this->useGoogleJquery === true) {
-    $this->headScript()->appendFile(
-        'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', 'text/javascript'
-    );
+$this->headScript()
+    ->appendFile($ajaxLibsPath . '/jquery/1.8.3/jquery.min.js')
+    ->appendFile($ajaxLibsPath . '/jqueryui/1.9.2/jquery-ui.min.js')
+    ->appendFile($publicPath   . '/js/elfinder.min.js');
 
-    $this->headScript()->appendFile(
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js', 'text/javascript'
-    );
-
-    $this->headLink()->appendStylesheet(
-        'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css'
-    );
-} else {
-    $this->headScript()->appendFile(
-        '/modules/rcm/vendor/jquery/js/jquery-1.8.2.js', 'text/javascript'
-    );
-
-    $this->headScript()->appendFile(
-        '/modules/rcm/vendor/jquery/js/jquery-ui-1.9.1.custom.min.js', 'text/javascript'
-    );
-
-    $this->headLink()->appendStylesheet(
-        '/modules/rcm/vendor/jquery/css/smoothness/jquery-ui-1.9.1.custom.css'
-    );
-}
-
-$this->headScript()->appendFile(
-    $this->basePath() . $this->elPublicPath . '/js/elfinder.min.js', 'text/javascript'
-);
-
-$this->headLink()->appendStylesheet(
-    $this->basePath() . $this->elPublicPath . '/css/elfinder.min.css'
-);
-
-$this->headLink()->appendStylesheet(
-    $this->basePath() . $this->elPublicPath . '/css/theme.css'
-);
+$this->headLink()
+    ->appendStylesheet($ajaxLibsPath . '/jqueryui/1.9.2/themes/smoothness/jquery-ui.css')
+    ->appendStylesheet($publicPath   . '/css/elfinder.min.css')
+    ->appendStylesheet($publicPath   . '/css/theme.css');
 
