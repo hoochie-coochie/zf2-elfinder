@@ -50,7 +50,14 @@ return array(
 
     'elfinder' => array(
         'connectorPath' => '/elfinder/connector',  //See routes below.  This must be routeable.
-        'publicFolder' => '/modules/el-finder',
+        'publicFolder'  => '/modules/el-finder',
+
+        // Include these scripts
+        'scripts'       => array(),
+
+        // Include these styles
+        'styles'        => array(),
+
         'mounts' => array(
             'images' => array(
                 'roots' => array(

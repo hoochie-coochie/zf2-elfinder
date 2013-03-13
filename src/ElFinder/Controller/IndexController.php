@@ -19,7 +19,10 @@
  */
 namespace ElFinder\Controller;
 
-use \Zend\Mvc\Controller\AbstractActionController;
+use ElFinder\Exception\RuntimeException;
+use Zend\Mvc\Controller\AbstractActionController;
+use elFinder;
+use elFinderConnector;
 
 /**
  * Index Controller for the entire application
@@ -61,29 +64,17 @@ class IndexController extends AbstractActionController
 
     public function init()
     {
-        $return = array();
-
-        $config = $this->getConfig();
-
+        $config    = $this->getConfig();
         $connector = $config['connectorPath'];
-
-        $type = $this->getEvent()->getRouteMatch()->getParam('fileType');
+        $type      = $this->params('fileType');
 
         if (empty($connector)) {
-            throw new \ElFinder\Exception\RuntimeException("
-                No Connector path found in Module config
-            ");
+            throw new RuntimeException("No Connector path found in Module config");
         }
 
-        if (!empty($type)) {
-            $return['connectorPath'] = $connector.'/'.$type;
-        } else {
-            $return['connectorPath'] = $connector;
-        }
-
-        $return['elPublicPath'] = $config['publicFolder'];
-
-        return $return;
+        return array(
+            'type' => $type,
+        );
     }
 
     public function connectorAction()
@@ -104,7 +95,7 @@ class IndexController extends AbstractActionController
             $mount['roots'][$k]['accessControl'] = array($this,'access');
         }
 
-        $connector = new \elFinderConnector(new \elFinder($mount));
+        $connector = new elFinderConnector(new elFinder($mount));
         $connector->run();
     }
 

@@ -32,6 +32,9 @@ namespace ElFinder;
  * @version   Release: 1.0
  * @link      http://ci.reliv.com/confluence
  */
+use ElFinder\View\Helper\ElFinder;
+use Zend\ServiceManager\ServiceManager;
+
 class Module
 {
     /**
@@ -73,11 +76,29 @@ class Module
      *
      * @return object Returns an object.
      */
-    public function getServiceConfig()
+    public function getViewHelperConfig()
     {
         return array(
             'factories' => array(
+                'elfinder' => function (ServiceManager $sm) {
+                    $sl     = $sm->getServiceLocator();
+                    $config = $sl->get('Config');
 
+                    $headScript = $sm->get('headScript');
+                    foreach ($config['elfinder']['scripts'] as $script) {
+                        $headScript->appendFile($script);
+                    }
+
+                    $headLink = $sm->get('headLink');
+                    foreach ($config['elfinder']['styles'] as $style) {
+                        $headLink->appendStylesheet($style);
+                    }
+
+                    $helper = new ElFinder();
+                    $helper->setConnectorURL($config['elfinder']['connectorPath']);
+
+                    return $helper;
+                }
             ),
         );
     }

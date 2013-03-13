@@ -1,28 +1,12 @@
 <?php
-include 'common.phtml';
-?>
 
-<script type="text/javascript">
-    function getUrlParam(paramName) {
-        var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-        var match = window.location.search.match(reParam) ;
+/** @var $elfinder \ElFinder\View\Helper\ElFinder */
+$type              = $this->type;
+$elfinder          = $this->plugin('elfinder');
+$connectorUrl      = $elfinder->getConnectorURL();
+$typedConnectorUrl = join('/', array($connectorUrl, $type));
 
-        return (match && match.length > 1) ? match[1] : '' ;
-    }
-
-    $(function(){
-        var funcNum = getUrlParam('CKEditorFuncNum');
-
-        var elf = $('#elfinder').elfinder({
-            url : '<?php echo $this->connectorPath; ?>',
-            getFileCallback : function(file) {
-                window.opener.CKEDITOR.tools.callFunction(funcNum, file);
-                window.close();
-            },
-            resizable: false
-        }).elfinder('instance');
-    });
-</script>
-
-<div id="elfinder"></div>
-
+echo $elfinder
+    ->setConnectorURL($typedConnectorUrl)
+    ->renderCkEditorScript('elfinder')
+    ->renderContainer('elfinder');

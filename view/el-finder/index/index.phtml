@@ -1,20 +1,12 @@
 <?php
-include 'common.phtml';
-?>
 
-<script type="text/javascript">
-    $(function(){
-        var elf = $('#elfinder').elfinder({
-            // lang: 'ru',             // language (OPTIONAL)
-            url : '<?php echo $this->connectorPath; ?>',  // connector URL (REQUIRED)
-            getFileCallback : function(file) {
-                window.opener.elFinderFileSelected(file);
-                window.close();
-            },
-            resizable: false
-        }).elfinder('instance');
-    });
-</script>
+/** @var $elfinder \ElFinder\View\Helper\ElFinder */
+$type              = $this->type;
+$elfinder          = $this->plugin('elfinder');
+$connectorUrl      = $elfinder->getConnectorURL();
+$typedConnectorUrl = join('/', array($connectorUrl, $type));
 
-<div id="elfinder"></div>
-
+echo $elfinder
+    ->setConnectorURL($typedConnectorUrl)
+    ->renderElFinderScript('elfinder')
+    ->renderContainer('elfinder');
